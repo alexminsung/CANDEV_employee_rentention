@@ -22,4 +22,55 @@ for (i in pkg) {
 
 #load data from url
 data <- fread("https://open.canada.ca/data/dataset/4301f4bb-1daa-4b50-afab-d1193b5d2284/resource/63f972a8-8bf2-4584-a735-e5d0c07a9eb6/download/subset-3-sous-ensemble-3.csv")
+
+
+```
+
+## Partioning the code into a training, validation and testing dataset
+
+```{r}
+#SAMPLE CREATING A TRAINING SET, TESTING SET, AND VALIDATION SET:
+# Step 1: defining the dataset
+
+#candev_2022_data
+
+# Step 2: Setting the fractions of the dataframe that I want to split into training, validation and test
+
+Training_percentage <- 0.70
+Validation_percentage <- 0.15
+Testing_percentage <- 0.15
+
+# Computing Sample sizes
+
+Training_sample_size <- floor(Training_percentage * nrow(candev_2022_data)) 
+Validation_sample_size <- floor(Validation_percentage * nrow(candev_2022_data))
+Testing_sample_size <- floor(Testing_percentage * nrow(candev_2022_data))
+
+# Create the randomly-sampled indices for the dataframe. Use setdiff() to avoid overlapping subsets of indices.
+
+Training_indices <- sort(sample(seq_len(nrow(candev_2022_data)), size=Training_sample_size))
+Non_training_indices <- setdiff(seq_len(nrow(candev_2022_data)), Training_indices)
+Validation_indices <- sort(sample(Non_training_indices, size=Validation_sample_size))
+Testing_indices <- setdiff(Non_training_indices, Validation_indices)
+
+
+#Outputting the three different dataframes
+
+Training_dataframe   <- candev_2022_data[Training_indices, ]
+Validation_dataframe <- candev_2022_data[Validation_indices, ]
+Testing_dataframe <- candev_2022_data[Testing_indices, ]
+
+
+
+
+
+nrow(candev_2022_data)
+#1405579
+nrow(Training_dataframe)
+#983905/1405579 = 0.70
+nrow(Validation_dataframe)
+#210836/1405579 = 0.146
+nrow(Testing_dataframe)
+#210838/1405579 = 0.153
+
 ```
