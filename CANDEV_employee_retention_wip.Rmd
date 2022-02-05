@@ -27,4 +27,19 @@ data <- fread("https://open.canada.ca/data/dataset/4301f4bb-1daa-4b50-afab-d1193
 ```{r}
 # filter only by ISED
 data_ISED <- data %>% filter(DEPT_E == "Innovation, Science and Economic Development Canada")
+
+# filter by select subcategory indicating racism, discrimination, inclusion, empowerment, etc.
+# several irrelevant columns were also removed 
+covariates <- c("Empowerment", "Ethical workplace", "Diversity and inclusion",
+                "Anti-racism", "Harassment", "Discrimination", "Duty to accommodate")
+
+data_ISED_comp <- data_ISED %>% select(LEVEL1ID, SURVEYR, BYCOND, DESCRIP_E, TITLE_E,
+                     ANSWER1, ANSWER2, ANSWER3, ANSWER4, ANSWER5,ANSWER6,ANSWER7,
+                     MOST_POSITIVE_OR_LEAST_NEGATIVE, NEUTRAL_OR_MIDDLE_CATEGORY, 
+                     MOST_NEGATIVE_OR_LEAST_POSITIVE, 
+                     AGREE, SCORE5, SCORE100, ANSCOUNT, DEPT_E, SUBINDICATORID,
+                     SUBINDICATORENG) %>% filter(SUBINDICATORENG %in% covariates)
+
+#  remove NA
+data_ISED_comp <- data_ISED_comp %>% filter(complete.cases(data_ISED_comp))
 ````
