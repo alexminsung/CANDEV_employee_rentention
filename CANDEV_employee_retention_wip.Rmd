@@ -7,3 +7,19 @@ output: pdf_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+```{r}
+
+# load package and install if package is not found
+pkg <- c("data.table")
+
+for (i in pkg) {
+  if (pkg %in% installed.packages()[, "Package"] == FALSE) {
+    install.package(i)
+  } else {
+    library(i, character.only = TRUE)
+  }
+}
+
+#load data from url
+data <- fread("https://open.canada.ca/data/dataset/4301f4bb-1daa-4b50-afab-d1193b5d2284/resource/63f972a8-8bf2-4584-a735-e5d0c07a9eb6/download/subset-3-sous-ensemble-3.csv")
+```
